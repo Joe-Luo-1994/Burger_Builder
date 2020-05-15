@@ -10,9 +10,9 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 const INGREDIENT_PRICES = {
 	salad: 0.5,
+	bacon: 0.7,
 	cheese: 0.4,
 	meat: 1.3,
-	bacon: 0.7,
 };
 
 class BurgerBuilder extends Component {
@@ -89,31 +89,22 @@ class BurgerBuilder extends Component {
 	};
 
 	purchaseContinueHandler = () => {
-		// alert('You continue!');
-		this.setState({ loading: true });
-		const order = {
-			ingredients: this.state.ingredients,
-			price: this.state.totalPrice,
-			customer: {
-				name: 'Max',
-				address: {
-					street: 'Teststreet',
-					zip: '413333',
-					country: 'Germany',
-				},
-				email: 'test@test.com',
-			},
-			deliveryMethod: 'fast',
-		};
-
-		myAxios
-			.post('/orders.jso', order)
-			.then((res) => {
-				this.setState({ loading: false, purchasing: false });
-			})
-			.catch((err) =>
-				this.setState({ loading: false, purchasing: false })
+		const queryParams = [];
+		for (let i in this.state.ingredients) {
+			queryParams.push(
+				encodeURIComponent(i) +
+					'=' +
+					encodeURIComponent(this.state.ingredients[i])
 			);
+		}
+		queryParams.push('price=' + this.state.totalPrice);
+
+		const queryString = queryParams.join('&');
+
+		this.props.history.push({
+			pathname: '/checkout',
+			search: '?' + queryString,
+		});
 	};
 
 	render() {
