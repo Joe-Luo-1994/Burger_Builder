@@ -12,7 +12,7 @@ const checkoutSummary = (props) => {
 					display: 'inline-block',
 					width: '100%',
 					height: '300px',
-					margin: 'auto',
+					margin: '0 auto',
 				}}
 			>
 				<Burger ingredients={props.ingredients}></Burger>
